@@ -1,9 +1,6 @@
 package ru.chay.githubclient.di
 
 import android.content.Context
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import ru.chay.githubclient.data.repository.GithubRepositoryImpl
 import ru.chay.githubclient.data.source.remote.GithubService
 import ru.chay.githubclient.domain.repository.GithubRepository
@@ -19,11 +16,7 @@ interface AppModule {
     ): AppModule {
 
         override val githubService: GithubService by lazy {
-            Retrofit.Builder()
-                .baseUrl("https://api.github.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create()
+            GithubService.create()
         }
 
         override val githubRepository: GithubRepository by lazy {

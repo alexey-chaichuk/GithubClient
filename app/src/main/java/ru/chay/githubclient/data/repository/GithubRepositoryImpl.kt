@@ -10,8 +10,8 @@ class GithubRepositoryImpl(
     private val mapper: Mapper = Mapper()
 ) : GithubRepository {
 
-    override suspend fun getUsersByName(name: String): List<User> {
-        return service.getUsers().map {
+    override suspend fun getUsersByName(query: String): List<User> {
+        return service.searchUsers(query).items.map {
             mapper.userDtoToDomain(it)
         }
     }

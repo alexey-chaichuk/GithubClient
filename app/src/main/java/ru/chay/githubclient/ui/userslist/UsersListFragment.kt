@@ -6,12 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 import ru.chay.githubclient.databinding.FragmentUsersListBinding
+import ru.chay.githubclient.ui.util.afterTextChanged
+import ru.chay.githubclient.ui.util.toGone
+import ru.chay.githubclient.ui.util.toVisible
 
 class UsersListFragment : Fragment() {
 
@@ -42,9 +46,29 @@ class UsersListFragment : Fragment() {
                 }
             }
         }
+
+        with(binding.rvUsersList) {
+            adapter = UserListAdapter()
+            addItemDecoration(UsersListItemDecorator(8))
+        }
+        binding.searchText.afterTextChanged(viewModel :: onNewQuery)
     }
 
     private fun processState(state: UsersListUiState) {
         Log.d("mainFragment", state.toString())
+        when(state) {
+            is UsersListUiState.Error -> {
+                binding.progressSearching.toGone()
+            }
+            UsersListUiState.Searching -> {
+                binding.rvUsersList.toGone()
+                binding.progressSearching.toVisible()
+            }
+            is UsersListUiState.Success -> {
+                binding.progressSearching.toGone()
+                (binding.rvUsersList.adapter as UserListAdapter).bindUsers(state.users)
+                binding.rvUsersList.toVisible()
+            }
+        }
     }
 }
