@@ -5,11 +5,13 @@ import ru.chay.githubclient.data.repository.GithubRepositoryImpl
 import ru.chay.githubclient.data.source.remote.GithubService
 import ru.chay.githubclient.domain.repository.GithubRepository
 import ru.chay.githubclient.domain.usecase.SearchUsersByNameUseCase
+import ru.chay.githubclient.domain.usecase.UserDetailsByLoginUseCase
 
 interface AppModule {
     val githubService: GithubService
     val githubRepository: GithubRepository
     val searchUsersByNameUseCase: SearchUsersByNameUseCase
+    val userDetailsByLoginUseCase: UserDetailsByLoginUseCase
 
     class Base(
         private val appContext: Context
@@ -25,6 +27,10 @@ interface AppModule {
 
         override val searchUsersByNameUseCase: SearchUsersByNameUseCase by lazy {
             SearchUsersByNameUseCase(githubRepository)
+        }
+
+        override val userDetailsByLoginUseCase: UserDetailsByLoginUseCase by lazy {
+            UserDetailsByLoginUseCase(githubRepository)
         }
     }
 }

@@ -21,13 +21,6 @@ class UsersListViewModel(
     val uiState: StateFlow<UsersListUiState> = _uiState
     private var searchJob: Job? = null
 
-//    init {
-//        viewModelScope.launch {
-//            val users = searchUsersByNameUseCase("")
-//            _uiState.value = UsersListUiState.Success(users.getOrDefault(emptyList()))
-//        }
-//    }
-
     fun onNewQuery(query: String) {
         if(query.isEmpty()) return
         if(searchJob?.isActive == true) searchJob?.cancel()

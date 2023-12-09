@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import ru.chay.githubclient.R
 import ru.chay.githubclient.domain.model.User
@@ -27,6 +28,11 @@ class UserListAdapter(
         when(holder){
             is UserDataViewHolder -> {
                 holder.onBind(users[position])
+                holder.itemView.setOnClickListener(
+                    Navigation.createNavigateOnClickListener(
+                        R.id.action_usersListFragment_to_userDetailsFragment
+                    )
+                )
             }
         }
     }
