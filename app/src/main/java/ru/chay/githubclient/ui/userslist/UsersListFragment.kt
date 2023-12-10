@@ -13,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 import ru.chay.githubclient.databinding.FragmentUsersListBinding
 import ru.chay.githubclient.ui.util.afterTextChanged
+import ru.chay.githubclient.ui.util.showSystemMessage
 import ru.chay.githubclient.ui.util.toGone
 import ru.chay.githubclient.ui.util.toVisible
 
@@ -58,6 +59,7 @@ class UsersListFragment : Fragment() {
         when(state) {
             is UsersListUiState.Error -> {
                 binding.progressSearching.toGone()
+                state.exception.localizedMessage?.let { showSystemMessage(it) }
             }
             UsersListUiState.Searching -> {
                 binding.rvUsersList.toGone()

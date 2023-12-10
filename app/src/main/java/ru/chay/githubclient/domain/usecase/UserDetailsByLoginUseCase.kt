@@ -1,12 +1,12 @@
 package ru.chay.githubclient.domain.usecase
 
-import ru.chay.githubclient.domain.model.User
+import ru.chay.githubclient.domain.model.UserDetails
 import ru.chay.githubclient.domain.repository.GithubRepository
 
 class UserDetailsByLoginUseCase(
     private val repository: GithubRepository
 ) {
-    suspend operator fun invoke(name: String) : List<User> {
-        return repository.getUsersByName(name)
+    suspend operator fun invoke(username: String) : UserDetails {
+        return repository.getUserDetails(username)
     }
 }

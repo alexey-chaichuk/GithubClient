@@ -3,6 +3,7 @@ package ru.chay.githubclient.data.repository
 import ru.chay.githubclient.data.mapper.Mapper
 import ru.chay.githubclient.data.source.remote.GithubService
 import ru.chay.githubclient.domain.model.User
+import ru.chay.githubclient.domain.model.UserDetails
 import ru.chay.githubclient.domain.repository.GithubRepository
 
 class GithubRepositoryImpl(
@@ -14,5 +15,11 @@ class GithubRepositoryImpl(
         return service.searchUsers(query).items.map {
             mapper.userDtoToDomain(it)
         }
+    }
+
+    override suspend fun getUserDetails(username: String): UserDetails {
+        return mapper.userDetailsDtoToDomain(
+            service.getUser(username)
+        )
     }
 }
