@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
@@ -14,10 +16,8 @@ import ru.chay.githubclient.domain.model.User
 
 class UserListAdapter(
 
-): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private var users = listOf<User>()
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+): ListAdapter<User, UserDataViewHolder>(UserItemDiffCallback()) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserDataViewHolder {
         return UserDataViewHolder(
             LayoutInflater.from(
                 parent.context
@@ -25,29 +25,34 @@ class UserListAdapter(
         )
     }
 
-    override fun getItemCount(): Int = users.size
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder){
-            is UserDataViewHolder -> {
-                val user = users[position]
-                holder.onBind(user)
-                holder.itemView.setOnClickListener {
-                    val action = UsersListFragmentDirections
-                        .actionUsersListFragmentToUserDetailsFragment(user)
-                    it.findNavController().navigate(action)
-                }
-            }
+    override fun onBindViewHolder(holder: UserDataViewHolder, position: Int) {
+        val user = currentList[position]
+        holder.onBind(user)
+        holder.itemView.setOnClickListener {
+            val action = UsersListFragmentDirections
+                .actionUsersListFragmentToUserDetailsFragment(user)
+            it.findNavController().navigate(action)
         }
     }
 
-    fun bindUsers(newUsers: List<User>) {
-        users = newUsers
-        notifyDataSetChanged()
+    override fun getItemCount(): Int = currentList.size
+
+    override fun onBindViewHolder(
+        holder: UserDataViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if(payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+        } else {
+            if(payloads[0] == true) {
+                holder.bindFollowers(currentList[position])
+            }
+        }
     }
 }
 
-private class UserDataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+class UserDataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
     private val tvUsername: TextView = itemView.findViewById(R.id.user_name)
     private val tvFullName: TextView = itemView.findViewById(R.id.user_full_name)
     private val tvFollowers: TextView = itemView.findViewById(R.id.user_followers)
@@ -60,5 +65,24 @@ private class UserDataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
         ivAvatar.load(user.avatarUrl) {
             transformations(RoundedCornersTransformation(32f))
         }
+    }
+
+    fun bindFollowers(user: User) {
+        user.fullName?.let { tvFullName.text = it }
+        user.followersText?.let { tvFollowers.text = it }
+    }
+}
+
+class UserItemDiffCallback : DiffUtil.ItemCallback<User>() {
+    override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+        return oldItem.name == newItem.name
+    }
+
+    override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+        return oldItem == newItem
+    }
+
+    override fun getChangePayload(oldItem: User, newItem: User): Any? {
+        return if (oldItem.followersText != newItem.followersText) true else null
     }
 }

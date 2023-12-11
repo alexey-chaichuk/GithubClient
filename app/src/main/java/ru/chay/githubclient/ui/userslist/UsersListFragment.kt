@@ -13,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 import ru.chay.githubclient.databinding.FragmentUsersListBinding
 import ru.chay.githubclient.ui.util.afterTextChanged
+import ru.chay.githubclient.ui.util.hideKeyboard
 import ru.chay.githubclient.ui.util.showSystemMessage
 import ru.chay.githubclient.ui.util.toGone
 import ru.chay.githubclient.ui.util.toVisible
@@ -62,13 +63,12 @@ class UsersListFragment : Fragment() {
                 state.exception.localizedMessage?.let { showSystemMessage(it) }
             }
             UsersListUiState.Searching -> {
-                binding.rvUsersList.toGone()
                 binding.progressSearching.toVisible()
             }
             is UsersListUiState.Success -> {
+                view?.hideKeyboard()
                 binding.progressSearching.toGone()
-                (binding.rvUsersList.adapter as UserListAdapter).bindUsers(state.users)
-                binding.rvUsersList.toVisible()
+                (binding.rvUsersList.adapter as UserListAdapter).submitList(state.users)
             }
         }
     }

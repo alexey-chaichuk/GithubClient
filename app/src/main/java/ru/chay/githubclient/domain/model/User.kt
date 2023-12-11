@@ -8,6 +8,6 @@ data class User(
     val name: String,
     val avatarUrl : String,
     val followersUrl: String,
-    var fullName: String? = null,
-    var followersText: String? = null
+    val fullName: String? = null,
+    val followersText: String? = null
 ): Parcelable

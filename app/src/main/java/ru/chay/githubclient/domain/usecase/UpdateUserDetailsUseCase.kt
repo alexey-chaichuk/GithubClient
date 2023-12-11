@@ -8,10 +8,10 @@ class UpdateUserDetailsUseCase(
 ) {
     suspend operator fun invoke(user: User): User {
         val userDetails = repository.getUserDetails(user.name)
-        with(user) {
-            fullName = userDetails.fullName
+        user.copy(
+            fullName = userDetails.fullName,
             followersText = "${userDetails.followers} followers"
-        }
+        )
         return user
     }
 }

@@ -1,5 +1,8 @@
 package ru.chay.githubclient.data.source.remote.dto
 
+import androidx.annotation.Keep
+
+@Keep
 data class RepositoryDto(
     val id : Int,
     val node_id : String,

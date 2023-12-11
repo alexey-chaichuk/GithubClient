@@ -53,12 +53,13 @@ class UsersListViewModel(
         searchJob = viewModelScope.launch(handler) {
             val users = searchUsersByNameUseCase(query)
             _uiState.value = UsersListUiState.Success(users)
-//            users.map { user ->
-//                launch {
-//                    updateUserDetailsUseCase(user)
-//                }
-//            }.joinAll()
-//            _uiState.value = UsersListUiState.Success(users)
+            users.map { user ->
+                launch {
+                    updateUserDetailsUseCase(user)
+                }
+            }.joinAll()
+            Log.d("mainViewModel", "all users updated: $users")
+            _uiState.value = UsersListUiState.Success(users)
         }
     }
 
