@@ -6,7 +6,7 @@ import ru.chay.githubclient.domain.repository.GithubRepository
 class UserDetailsByLoginUseCase(
     private val repository: GithubRepository
 ) {
-    suspend operator fun invoke(username: String) : UserDetails {
+    suspend operator fun invoke(username: String): UserDetails {
         return repository.getUserDetails(username)
     }
 }

@@ -13,6 +13,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import kotlinx.coroutines.launch
 import ru.chay.githubclient.databinding.FragmentUserDetailsBinding
+import ru.chay.githubclient.ui.userslist.UserListAdapter
+import ru.chay.githubclient.ui.userslist.UsersListItemDecorator
 import ru.chay.githubclient.ui.util.showSystemMessage
 import ru.chay.githubclient.ui.util.toGone
 import ru.chay.githubclient.ui.util.toVisible
@@ -20,7 +22,7 @@ import ru.chay.githubclient.ui.util.toVisible
 class UserDetailsFragment : Fragment() {
     private var _binding: FragmentUserDetailsBinding? = null
     private val binding get() = _binding!!
-    val args: UserDetailsFragmentArgs by navArgs()
+    private val args: UserDetailsFragmentArgs by navArgs()
     private val viewModel: UserDetailsViewModel by viewModels { UserDetailsViewModel.Factory }
 
     override fun onCreateView(
@@ -39,7 +41,7 @@ class UserDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getUserDetails(args.username)
+        viewModel.getUserDetails(args.user.name)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -49,6 +51,10 @@ class UserDetailsFragment : Fragment() {
             }
         }
 
+        with(binding.rvRepos) {
+            adapter = ReposListAdapter()
+            addItemDecoration(ReposListItemDecorator(8))
+        }
     }
 
     private fun processState(state: UserDetailsUiState) {
@@ -66,7 +72,8 @@ class UserDetailsFragment : Fragment() {
                     progressLoading.toGone()
                     tvUsername.text = state.user.name
                     tvFullname.text = state.user.fullName
-                    tvFollowers.text = state.user.followers.toString()
+                    tvFollowers.text = state.user.followersText
+                    (binding.rvRepos.adapter as ReposListAdapter).bindRepos(state.repos)
                 }
             }
         }

@@ -4,5 +4,6 @@ data class UserDetails(
     val name: String,
     val fullName: String?,
     val followers: Int,
+    val followersText: String,
     val repositoriesUrl: String
 )

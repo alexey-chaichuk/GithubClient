@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_user_item"
+    android:padding="8dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_repo_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="repo name"/>
+    <TextView
+        android:id="@+id/tv_repo_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="repo description"/>
+    <TextView
+        android:id="@+id/tv_repo_updated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="repo updated"/>
+    <TextView
+        android:id="@+id/tv_repo_stars"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="repo stars"/>
+    <TextView
+        android:id="@+id/tv_repo_forks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="repo forks"/>
+    <TextView
+        android:id="@+id/tv_repo_default_branch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="repo default branch"/>
+    <TextView
+        android:id="@+id/tv_repo_lang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="repo language"/>
+
+</LinearLayout>

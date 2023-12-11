@@ -20,7 +20,7 @@
         android:label="fragment_user_details"
         tools:layout="@layout/fragment_user_details" >
         <argument
-            android:name="username"
-            app:argType="string" />
+            android:name="user"
+            app:argType="ru.chay.githubclient.domain.model.User" />
     </fragment>
 </navigation>

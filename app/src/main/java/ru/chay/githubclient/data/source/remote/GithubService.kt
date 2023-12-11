@@ -8,6 +8,7 @@ import retrofit2.create
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import ru.chay.githubclient.data.source.remote.dto.RepositoryDto
 import ru.chay.githubclient.data.source.remote.dto.SearchResponseDto
 import ru.chay.githubclient.data.source.remote.dto.UserDetailsDto
 import ru.chay.githubclient.data.source.remote.dto.UserDto
@@ -26,6 +27,11 @@ interface GithubService {
     suspend fun getUser(
         @Path("username") username: String
     ): UserDetailsDto
+
+    @GET("/users/{username}/repos")
+    suspend fun getReposForUser(
+        @Path("username") username: String
+    ): List<RepositoryDto>
 
     companion object {
         private const val baseUrl = "https://api.github.com"
